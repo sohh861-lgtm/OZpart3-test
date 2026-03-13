@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PawCare</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+</head>
+<body>
+
+<div class="app">
+  <main class="app__main">
+    
+    <!-- ══ SPLASH ══ -->
+    <section class="page page--splash" id="page-splash">
+      <div class="splash">
+        <div class="splash__logo">🐾</div>
+        <h1 class="splash__title">PawCare</h1>
+      </div>
+    </section>
+
+    <!-- ══ ONBOARDING ══ -->
+    <section class="page page--intro" id="page-onboarding">
+      <div class="onboarding">
+        <div class="onboarding__slides" id="js-ob-slides">
+          <!-- Slide 1 -->
+          <div class="ob-slide ob-slide--active">
+            <div class="ob-slide__img">🤖</div>
+            <h2 class="ob-slide__title">AI 스마트 건강 관리</h2>
+            <p class="ob-slide__desc">매일매일 기록하고 분석하는<br>우리 아이 맞춤형 AI 건강 리포트</p>
+          </div>
+          <!-- Slide 2 -->
+          <div class="ob-slide">
+            <div class="ob-slide__img">✨</div>
+            <h2 class="ob-slide__title">딱 맞는 맞춤 추천</h2>
+            <p class="ob-slide__desc">품종, 나이, 알레르기까지 고려한<br>최적의 영양제와 사료 추천</p>
+          </div>
+          <!-- Slide 3 -->
+          <div class="ob-slide">
+            <div class="ob-slide__img">📅</div>
+            <h2 class="ob-slide__title">일정부터 검진까지</h2>
+            <p class="ob-slide__desc">다가오는 접종일, 잊지 않도록<br>똑똑하게 챙겨드릴게요</p>
+          </div>
+        </div>
+
+        <div class="onboarding__bottom">
+          <div class="ob-dots" id="js-ob-dots">
+            <div class="ob-dot ob-dot--active"></div>
+            <div class="ob-dot"></div>
+            <div class="ob-dot"></div>
+          </div>
+          <div class="ob-actions">
+            <button class="btn btn--text" id="js-btn-skip">건너뛰기</button>
+            <button class="btn btn--primary" id="js-btn-next">다음</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ LOGIN ══ -->
+    <section class="page page--intro" id="page-login">
+      <div class="login">
+        <div class="login__header">
+          <div class="login__logo">🐾</div>
+          <h1 class="login__title">반려동물과의 행복한 동행,<br>지금 시작하세요.</h1>
+        </div>
+        <div class="login__actions">
+          <button class="btn-social btn-social--kakao" onclick="window.app.goToWizard()">
+            <span class="btn-social__icon">💬</span> 카카오 로그인
+          </button>
+          <button class="btn-social btn-social--apple" onclick="window.app.goToWizard()">
+            <span class="btn-social__icon"></span> Apple로 로그인
+          </button>
+          <button class="btn-social btn-social--google" onclick="window.app.goToWizard()">
+            <span class="btn-social__icon">G</span> Google로 로그인
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ PET WIZARD ══ -->
+    <section class="page page--intro page-wizard" id="page-wizard">
+      <header class="wizard-header">
+        <button class="wizard-header__back" id="js-wiz-back">‹</button>
+        <span class="wizard-header__title">프로필 등록</span>
+        <div class="wizard-header__skip"></div>
+      </header>
+      
+      <div class="wiz-progress">
+        <div class="wiz-progress__fill" id="js-wiz-bar"></div>
+      </div>
+
+      <div class="wiz-container">
+        <!-- Step 1: Basic -->
+        <div class="wiz-step" id="wiz-step-1">
+          <h2 class="wiz-title">기본 정보를<br>알려주세요 🐶</h2>
+          
+          <div class="wiz-photo" id="js-wiz-photo-trigger">
+            <div class="wiz-photo__circle" id="js-wiz-photo-preview">📷</div>
+            <p class="wiz-photo__label">사진 등록</p>
+            <input type="file" id="js-pet-photo-input" accept="image/*" style="display:none;">
+          </div>
+
+          <div class="wiz-field">
+            <label class="wiz-label">이름</label>
+            <input type="text" id="wiz-pet-name" class="wiz-input" placeholder="이름을 입력하세요">
+          </div>
+
+          <div class="wiz-row">
+            <div class="wiz-field flex-1">
+              <label class="wiz-label">종류</label>
+              <div class="wiz-tabs" id="wiz-pet-type">
+                <button class="wiz-tab wiz-tab--active" data-value="강아지">강아지</button>
+                <button class="wiz-tab" data-value="고양이">고양이</button>
+              </div>
+            </div>
+            <div class="wiz-field flex-1">
+              <label class="wiz-label">성별</label>
+              <div class="wiz-tabs" id="wiz-pet-gender">
+                <button class="wiz-tab wiz-tab--active" data-value="남아">남아</button>
+                <button class="wiz-tab" data-value="여아">여아</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="wiz-field">
+            <label class="wiz-label">품종</label>
+            <input type="text" id="wiz-pet-breed" class="wiz-input" placeholder="예) 말티즈">
+          </div>
+          
+          <div class="wiz-row">
+            <div class="wiz-field flex-1">
+              <label class="wiz-label">나이</label>
+              <input type="number" id="wiz-pet-age" class="wiz-input" placeholder="0">
+            </div>
+            <div class="wiz-field flex-1">
+              <label class="wiz-label">몸무게 (kg)</label>
+              <input type="number" id="wiz-pet-weight" class="wiz-input" placeholder="0.0">
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Health -->
+        <div class="wiz-step hidden" id="wiz-step-2">
+          <h2 class="wiz-title">아이의 건강 상태는<br>어떤가요? 🩺</h2>
+          
+          <div class="wiz-field">
+            <label class="wiz-label">중성화 여부</label>
+            <div class="wiz-tabs">
+              <button class="wiz-tab wiz-tab--active">했어요</button>
+              <button class="wiz-tab">안했어요</button>
+            </div>
+          </div>
+
+          <div class="wiz-field">
+            <label class="wiz-label">주의할 질환 (선택)</label>
+            <div class="wiz-chips">
+              <button class="wiz-chip">슬개골 탈구</button>
+              <button class="wiz-chip wiz-chip--active">심장 질환</button>
+              <button class="wiz-chip">신장 질환</button>
+              <button class="wiz-chip">피부염</button>
+              <button class="wiz-chip">백내장</button>
+            </div>
+          </div>
+
+          <div class="wiz-field">
+            <label class="wiz-label">알레르기 성분 (선택)</label>
+            <div class="wiz-chips">
+              <button class="wiz-chip wiz-chip--active">닭고기</button>
+              <button class="wiz-chip">소고기</button>
+              <button class="wiz-chip">유제품</button>
+              <button class="wiz-chip">밀가루</button>
+              <button class="wiz-chip">계란</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Lifestyle -->
+        <div class="wiz-step hidden" id="wiz-step-3">
+          <h2 class="wiz-title">평소 생활 습관을<br>체크해주세요 ⚽️</h2>
+          
+          <div class="wiz-field">
+            <label class="wiz-label">활동량</label>
+            <div class="wiz-selection">
+              <button class="wiz-sel-btn wiz-sel-btn--active"><div>🚶 적음</div><div class="wiz-sel-desc">하루 산책 30분 미만</div></button>
+              <button class="wiz-sel-btn"><div>🏃 보통</div><div class="wiz-sel-desc">하루 산책 30분~1시간</div></button>
+              <button class="wiz-sel-btn"><div>⚡️ 많음</div><div class="wiz-sel-desc">에너지가 넘쳐요</div></button>
+            </div>
+          </div>
+
+          <div class="wiz-field">
+            <label class="wiz-label">식습관</label>
+            <div class="wiz-tabs">
+              <button class="wiz-tab wiz-tab--active">제한 급식</button>
+              <button class="wiz-tab">자율 급식</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Loading -->
+        <div class="wiz-step hidden" id="wiz-step-4">
+          <div class="wiz-loading">
+            <div class="spinner"></div>
+            <h2 class="wiz-loading__title">AI 맞춤 분석 중...</h2>
+            <p class="wiz-loading__desc">입력해주신 정보를 바탕으로<br>최적의 케어 플랜을 생성하고 있어요.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="wiz-bottom" id="js-wiz-bottom">
+        <button class="btn btn--primary btn--full" id="js-wiz-next">다음</button>
+      </div>
+    </section>
+
+    <!-- ══ HOME ══ -->
+    <section class="page" id="page-home">
+      <header class="header">
+        <div>
+          <div class="header__greeting">안녕하세요 👋</div>
+          <h1 class="header__name">김보호자님</h1>
+        </div>
+        <button class="header__bell">🔔<div class="header__badge"></div></button>
+      </header>
+
+      <h2 class="section-title">🐾 오늘의 반려동물 상태</h2>
+      <article class="status-card">
+        <div class="status-card__avatar" id="js-home-avatar">🐶</div>
+        <div class="status-card__info">
+          <h3 class="status-card__name"><span id="js-home-name">몽이</span> · <span id="js-home-breed">말티즈</span></h3>
+          <p class="status-card__meta"><span id="js-home-age">5</span>세 · <span id="js-home-gender">수컷</span> · <span id="js-home-weight">4.2</span>kg</p>
+          <div class="status-card__label-row">
+            <span>AI 건강 지수</span>
+            <span class="status-card__label-value">72점</span>
+          </div>
+          <div class="status-card__track">
+            <div class="status-card__fill" style="width: 72%;"></div>
+          </div>
+        </div>
+      </article>
+
+      <h2 class="section-title">✅ 오늘 챙길 것</h2>
+      <div class="care-list" id="js-care-list">
+        <article class="care-item care-item--done" data-id="joint">
+          <div class="care-item__icon care-item__icon--blue">💊</div>
+          <div class="care-item__info">
+            <h3 class="care-item__name">관절 영양제</h3>
+            <p class="care-item__sub">아침 식사 후 1정</p>
+          </div>
+          <div class="care-item__check"></div>
+        </article>
+        <article class="care-item" data-id="food">
+          <div class="care-item__icon care-item__icon--yellow">🍚</div>
+          <div class="care-item__info">
+            <h3 class="care-item__name">저녁 사료 급여</h3>
+            <p class="care-item__sub">권장량 80g · 저녁 6시</p>
+          </div>
+          <div class="care-item__check"></div>
+        </article>
+        <article class="care-item" data-id="heart">
+          <div class="care-item__icon care-item__icon--orange">💉</div>
+          <div class="care-item__info">
+            <h3 class="care-item__name">심장사상충 예방약</h3>
+            <p class="care-item__sub">이번 달 미완료</p>
+          </div>
+          <div class="care-item__check"></div>
+        </article>
+      </div>
+
+      <h2 class="section-title">📅 다가오는 일정</h2>
+      <div class="schedule-card">
+        <article class="schedule-item">
+          <div class="schedule-item__date-box">
+            <span class="schedule-item__month">MAR</span>
+            <span class="schedule-item__day">15</span>
+          </div>
+          <div class="schedule-item__info">
+            <h3 class="schedule-item__title">정기 건강검진</h3>
+            <p class="schedule-item__sub">혈액검사 · 체중 측정</p>
+          </div>
+          <span class="schedule-item__badge">6일 후</span>
+        </article>
+        <article class="schedule-item">
+          <div class="schedule-item__date-box">
+            <span class="schedule-item__month">MAR</span>
+            <span class="schedule-item__day">13</span>
+          </div>
+          <div class="schedule-item__info">
+            <h3 class="schedule-item__title">구충제 투여</h3>
+            <p class="schedule-item__sub">매월 정기</p>
+          </div>
+          <span class="schedule-item__badge schedule-item__badge--urgent">2일 후</span>
+        </article>
+      </div>
+
+      <h2 class="section-title">💡 AI 건강 팁</h2>
+      <article class="tip-card">
+        <div class="tip-card__icon">🤖</div>
+        <div class="tip-card__info">
+          <span class="tip-card__badge">오늘의 팁</span>
+          <p class="tip-card__text">몽이는 5세 말티즈로 슬개골 탈구 위험이 높아요. 계단 이용을 줄이고 관절 영양제를 꾸준히 챙겨주세요.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ══ RECOMMEND ══ -->
+    <section class="page" id="page-recommend">
+      <header class="header">
+        <h1 class="header__title">맞춤 추천</h1>
+        <button class="header__filter">🎛</button>
+      </header>
+
+      <div class="rec-target">
+        <div class="rec-target__avatar" id="js-rec-avatar">🐶</div>
+        <div class="rec-target__info">
+          <h2 class="rec-target__name"><span id="js-rec-name">몽이</span> 기준 추천</h2>
+          <p class="rec-target__meta"><span id="js-rec-breed">말티즈</span> · <span id="js-rec-age">5</span>세 · <span id="js-rec-weight">4.2</span>kg</p>
+        </div>
+        <button class="rec-target__change">변경</button>
+      </div>
+
+      <div class="tabs" id="js-rec-tabs">
+        <button class="tabs__item tabs__item--active" data-rectab="supplement">💊 영양제</button>
+        <button class="tabs__item" data-rectab="food">🍚 사료</button>
+      </div>
+
+      <div class="filter">
+        <h3 class="filter__title">🎛 추천 필터</h3>
+        <div class="filter__row">
+          <span class="filter__label">예산 범위</span>
+          <div class="filter__track" id="js-budget-slider">
+            <div class="filter__fill" id="js-budget-fill" style="width: 60%;"></div>
+          </div>
+          <span class="filter__value" id="js-budget-val">~6만원</span>
+        </div>
+        <div class="filter__row">
+          <span class="filter__label">제외 성분</span>
+          <span class="filter__value">닭고기</span>
+        </div>
+      </div>
+
+      <div class="item-list" id="js-rec-list">
+        <!-- JS populated cards here -->
+      </div>
+    </section>
+
+    <!-- ══ HEALTH CHECK ══ -->
+    <section class="page" id="page-health">
+      <header class="header" style="display:block;">
+        <h1 class="header__title">건강검진</h1>
+        <p class="header__sub-title"><span id="js-health-name">몽이</span>의 맞춤 검진 가이드</p>
+      </header>
+
+      <article class="next-checkup">
+        <p class="next-checkup__label">다음 검진 예정일</p>
+        <h2 class="next-checkup__date">3월 15일 (토)</h2>
+        <p class="next-checkup__sub">6일 후 · 가나동물병원</p>
+        <div class="next-checkup__row">
+          <div class="next-checkup__tags">
+            <span class="next-checkup__tag">혈액검사</span>
+            <span class="next-checkup__tag">체중측정</span>
+            <span class="next-checkup__tag">관절</span>
+          </div>
+          <button class="next-checkup__btn">일정 관리 →</button>
+        </div>
+      </article>
+
+      <h2 class="section-title">📋 맞춤 검진 항목</h2>
+      <div class="item-list">
+        <article class="req-item">
+          <div class="req-item__icon req-item__icon--blue">🩸</div>
+          <div class="req-item__info">
+            <div class="req-item__title-row">
+              <h3 class="req-item__title">혈액검사 (CBC)</h3>
+              <span class="req-item__tag req-item__tag--req">필수</span>
+            </div>
+            <p class="req-item__desc">5세 이상 소형견 반기 1회 권장. 빈혈·감염·장기 기능 이상 조기 발견.</p>
+          </div>
+        </article>
+        <article class="req-item">
+          <div class="req-item__icon req-item__icon--blue">🦴</div>
+          <div class="req-item__info">
+            <div class="req-item__title-row">
+              <h3 class="req-item__title">관절 방사선 검사</h3>
+              <span class="req-item__tag req-item__tag--req">필수</span>
+            </div>
+            <p class="req-item__desc">말티즈 슬개골 탈구 고위험군. 연 1회 정밀 검사 권장.</p>
+          </div>
+        </article>
+        <article class="req-item">
+          <div class="req-item__icon req-item__icon--yellow">🫀</div>
+          <div class="req-item__info">
+            <div class="req-item__title-row">
+              <h3 class="req-item__title">심장 청진 검사</h3>
+              <span class="req-item__tag req-item__tag--opt">권장</span>
+            </div>
+            <p class="req-item__desc">말티즈 심장 질환 발생률 높음. 5세 이후 연 1회 권장.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 class="section-title">📅 검진 캘린더</h2>
+      <div class="calendar" id="js-calendar">
+        <div class="calendar__header">
+          <h3 class="calendar__month">2026년 3월</h3>
+          <div class="calendar__nav">
+            <button class="calendar__btn">‹</button>
+            <button class="calendar__btn">›</button>
+          </div>
+        </div>
+        <div class="calendar__days">
+          <div class="calendar__day-label">일</div><div class="calendar__day-label">월</div><div class="calendar__day-label">화</div><div class="calendar__day-label">수</div><div class="calendar__day-label">목</div><div class="calendar__day-label">금</div><div class="calendar__day-label">토</div>
+        </div>
+        <div class="calendar__grid" id="js-calendar-grid">
+          <div class="calendar__cell calendar__cell--dim">23</div><div class="calendar__cell calendar__cell--dim">24</div><div class="calendar__cell calendar__cell--dim">25</div><div class="calendar__cell calendar__cell--dim">26</div><div class="calendar__cell calendar__cell--dim">27</div><div class="calendar__cell calendar__cell--dim">28</div><div class="calendar__cell">1</div>
+          <div class="calendar__cell">2</div><div class="calendar__cell">3</div><div class="calendar__cell">4</div><div class="calendar__cell">5</div><div class="calendar__cell">6</div><div class="calendar__cell">7</div><div class="calendar__cell">8</div>
+          <div class="calendar__cell">9</div><div class="calendar__cell">10</div><div class="calendar__cell calendar__cell--today">11</div><div class="calendar__cell">12</div><div class="calendar__cell calendar__cell--event">13</div><div class="calendar__cell">14</div><div class="calendar__cell calendar__cell--event">15</div>
+          <div class="calendar__cell">16</div><div class="calendar__cell">17</div><div class="calendar__cell">18</div><div class="calendar__cell">19</div><div class="calendar__cell">20</div><div class="calendar__cell">21</div><div class="calendar__cell">22</div>
+          <div class="calendar__cell">23</div><div class="calendar__cell">24</div><div class="calendar__cell">25</div><div class="calendar__cell">26</div><div class="calendar__cell calendar__cell--event">27</div><div class="calendar__cell">28</div><div class="calendar__cell">29</div>
+          <div class="calendar__cell">30</div><div class="calendar__cell">31</div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 class="section-title">📁 검진 기록</h2>
+      <div class="card" style="margin-bottom:20px;">
+        <h3 class="section-title" style="padding:0; margin-bottom:12px;">최근 검진 히스토리</h3>
+        <div class="record-item">
+          <div class="record-item__dot record-item__dot--blue"></div>
+          <span class="record-item__date">2026.01</span>
+          <span class="record-item__name">혈액검사 · 체중측정</span>
+          <span class="record-item__result record-item__result--ok">정상</span>
+        </div>
+        <div class="record-item">
+          <div class="record-item__dot record-item__dot--orange"></div>
+          <span class="record-item__date">2025.09</span>
+          <span class="record-item__name">관절 방사선</span>
+          <span class="record-item__result record-item__result--warn">주의</span>
+        </div>
+        <div class="record-item">
+          <div class="record-item__dot record-item__dot--green"></div>
+          <span class="record-item__date">2025.06</span>
+          <span class="record-item__name">종합검진</span>
+          <span class="record-item__result record-item__result--ok">정상</span>
+        </div>
+      </div>
+      
+      <div class="section-divider"></div>
+      
+      <h2 class="section-title">🤖 AI 검진 코멘트</h2>
+      <div class="card" style="margin-bottom:20px;">
+        <p style="font-size:12px; line-height:1.6; color:var(--text-main);">몽이의 최근 관절 방사선 결과에서 초기 슬개골 탈구 징후가 보였습니다. 꾸준한 체중 관리와 미끄럼 방지 매트 사용을 권장합니다. 다음 주 예정된 검진에서 진행 상황을 꼭 체크하세요.</p>
+      </div>
+    </section>
+
+    <!-- ══ MY PET ══ -->
+    <section class="page" id="page-mypet">
+      <div class="profile">
+        <div class="profile__bg"></div>
+        <div class="profile__content">
+          <div class="profile__avatar-box">
+            <div class="profile__avatar" id="js-mypet-avatar">🐶</div>
+            <button class="profile__edit-badge">✏️</button>
+          </div>
+          <h1 class="profile__name" id="js-mypet-name">몽이</h1>
+          <p class="profile__meta"><span id="js-mypet-breed">말티즈</span> · <span id="js-mypet-age">5</span>세 · <span id="js-mypet-gender">수컷</span> · <span id="js-mypet-weight">4.2</span>kg</p>
+        </div>
+      </div>
+
+      <div class="small-tabs" id="js-mypet-tabs">
+        <button class="small-tabs__btn small-tabs__btn--active" id="js-mypet-tab-name">🐶 몽이</button>
+        <button class="small-tabs__btn">🐱 나비</button>
+        <button class="small-tabs__add" onclick="window.app.goToWizard()">+ 추가</button>
+      </div>
+
+      <div class="dashboard">
+        <article class="score-card">
+          <p class="score-card__label">AI 건강 지수</p>
+          <div class="score-card__value">72 <span class="score-card__unit">점</span></div>
+          <div class="score-card__track">
+            <div class="score-card__fill"></div>
+          </div>
+          <p class="score-card__sub">지난달 대비 +5점 상승했어요 📈</p>
+        </article>
+
+        <div class="grid-cards">
+          <div class="gcard">
+            <p class="gcard__label">체중 상태</p>
+            <div class="gcard__value">4.2<span class="gcard__unit">kg</span></div>
+            <p class="gcard__status gcard__status--ok">정상 범위</p>
+            <div class="gcard__track"><div class="gcard__fill gcard__fill--blue"></div></div>
+          </div>
+          <div class="gcard">
+            <p class="gcard__label">활동량</p>
+            <div class="gcard__value" style="font-size:16px;">낮음</div>
+            <p class="gcard__status gcard__status--warn">관리 필요</p>
+            <div class="gcard__track"><div class="gcard__fill gcard__fill--orange"></div></div>
+          </div>
+          <div class="gcard">
+            <p class="gcard__label">다음 검진</p>
+            <div class="gcard__value" style="font-size:15px;">3월 15일</div>
+            <p class="gcard__status gcard__status--ok">6일 후</p>
+          </div>
+          <div class="gcard">
+            <p class="gcard__label">누적 기록</p>
+            <div class="gcard__value">12<span class="gcard__unit">회</span></div>
+            <p class="gcard__status gcard__status--ok">검진 완료</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 class="section-title">🎯 관리 우선순위</h2>
+      <div class="item-list" style="margin-bottom:16px;">
+        <div class="priority-item">
+          <div class="priority-item__rank priority-item__rank--1">1</div>
+          <span class="priority-item__text">슬개골 · 관절 관리</span>
+          <span class="priority-item__level priority-item__level--high">높음</span>
+        </div>
+        <div class="priority-item">
+          <div class="priority-item__rank priority-item__rank--2">2</div>
+          <span class="priority-item__text">치아 · 구강 위생</span>
+          <span class="priority-item__level priority-item__level--mid">중간</span>
+        </div>
+        <div class="priority-item">
+          <div class="priority-item__rank priority-item__rank--3">3</div>
+          <span class="priority-item__text">체중 · 식이 관리</span>
+          <span class="priority-item__level priority-item__level--low">낮음</span>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h2 class="section-title">📈 건강 지수 추이</h2>
+      <div class="chart">
+        <h3 class="chart__title">최근 6개월</h3>
+        <p class="chart__sub">건강 지수가 꾸준히 상승 중이에요</p>
+        <div class="chart__bars">
+          <div class="chart__col"><div class="chart__bar-bg" style="height:34px;"><div class="chart__bar-fill" style="height:70%"></div></div><span class="chart__month">10월</span></div>
+          <div class="chart__col"><div class="chart__bar-bg" style="height:44px;"><div class="chart__bar-fill" style="height:75%"></div></div><span class="chart__month">11월</span></div>
+          <div class="chart__col"><div class="chart__bar-bg" style="height:40px;"><div class="chart__bar-fill" style="height:72%"></div></div><span class="chart__month">12월</span></div>
+          <div class="chart__col"><div class="chart__bar-bg" style="height:50px;"><div class="chart__bar-fill" style="height:78%"></div></div><span class="chart__month">1월</span></div>
+          <div class="chart__col"><div class="chart__bar-bg" style="height:55px;"><div class="chart__bar-fill" style="height:80%"></div></div><span class="chart__month">2월</span></div>
+          <div class="chart__col"><div class="chart__bar-bg chart__bar-bg--highlight" style="height:62px;"><div class="chart__bar-fill chart__bar-fill--highlight" style="height:100%"></div></div><span class="chart__month">3월</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ SETTINGS ══ -->
+    <section class="page" id="page-settings">
+      <header class="header" style="display:block; padding-bottom: 20px;">
+        <h1 class="header__title">설정</h1>
+      </header>
+
+      <div class="user-card">
+        <div class="user-card__avatar">👤</div>
+        <div class="user-card__info">
+          <h2 class="user-card__name">김보호자</h2>
+          <p class="user-card__email">pawcare@email.com</p>
+          <span class="user-card__plan">✨ 프리미엄</span>
+        </div>
+        <button class="user-card__edit">✏️</button>
+      </div>
+
+      <div class="settings-group">
+        <h3 class="settings-group__label">계정 관리</h3>
+        <div class="settings-row">
+          <div class="settings-row__icon settings-row__icon--blue">👤</div>
+          <span class="settings-row__label">프로필 수정</span>
+          <span class="settings-row__arrow">›</span>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row__icon settings-row__icon--gray">🔒</div>
+          <span class="settings-row__label">비밀번호 변경</span>
+          <span class="settings-row__arrow">›</span>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row__icon settings-row__icon--yellow">🔗</div>
+          <span class="settings-row__label">소셜 계정 연동</span>
+          <span class="settings-row__value">카카오</span>
+          <span class="settings-row__arrow">›</span>
+        </div>
+      </div>
+
+      <div class="settings-group" id="js-settings-toggles">
+        <h3 class="settings-group__label">알림 설정</h3>
+        <div class="toggle-row" data-key="checkup">
+          <div class="toggle-row__icon">🏥</div>
+          <span class="toggle-row__label">검진 알림</span>
+          <div class="toggle toggle--on" id="js-toggle-checkup"></div>
+        </div>
+        <div class="toggle-row" data-key="reminder">
+          <div class="toggle-row__icon">💊</div>
+          <span class="toggle-row__label">케어 리마인더</span>
+          <div class="toggle toggle--on" id="js-toggle-reminder"></div>
+        </div>
+        <div class="toggle-row" data-key="notice">
+          <div class="toggle-row__icon" style="background:rgba(74,202,127,0.1);">📢</div>
+          <span class="toggle-row__label">앱 공지 알림</span>
+          <div class="toggle toggle--off" id="js-toggle-notice"></div>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <h3 class="settings-group__label">구독 · 결제</h3>
+        <div class="settings-row">
+          <div class="settings-row__icon settings-row__icon--orange">✨</div>
+          <span class="settings-row__label">요금제 안내</span>
+          <span class="settings-row__value" style="color:var(--primary-orange);font-weight:700;">프리미엄</span>
+          <span class="settings-row__arrow">›</span>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row__icon settings-row__icon--gray">💳</div>
+          <span class="settings-row__label">결제 수단 관리</span>
+          <span class="settings-row__arrow">›</span>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <h3 class="settings-group__label">고객센터</h3>
+        <div class="settings-row">
+          <div class="settings-row__icon settings-row__icon--green">❓</div>
+          <span class="settings-row__label">자주 묻는 질문 (FAQ)</span>
+          <span class="settings-row__arrow">›</span>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row__icon settings-row__icon--blue">💬</div>
+          <span class="settings-row__label">1:1 문의</span>
+          <span class="settings-row__arrow">›</span>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <h3 class="settings-group__label">앱 정보</h3>
+        <div class="settings-row">
+          <div class="settings-row__icon settings-row__icon--gray">ℹ️</div>
+          <span class="settings-row__label">버전 정보</span>
+          <span class="settings-row__value">v1.0.0</span>
+          <span class="settings-row__arrow">›</span>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row__icon settings-row__icon--gray">📄</div>
+          <span class="settings-row__label">이용약관</span>
+          <span class="settings-row__arrow">›</span>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row__icon settings-row__icon--gray">🔐</div>
+          <span class="settings-row__label">개인정보처리방침</span>
+          <span class="settings-row__arrow">›</span>
+        </div>
+      </div>
+
+      <button class="btn-danger">회원 탈퇴</button>
+    </section>
+
+  </main>
+
+  <nav class="nav" id="js-nav">
+    <button class="nav__item nav__item--active" data-tab="home">
+      <span class="nav__icon">🏠</span>
+      <span class="nav__label">홈</span>
+    </button>
+    <button class="nav__item" data-tab="recommend">
+      <span class="nav__icon">✨</span>
+      <span class="nav__label">맞춤 추천</span>
+    </button>
+    <button class="nav__item" data-tab="health">
+      <span class="nav__icon">🏥</span>
+      <span class="nav__label">건강검진</span>
+    </button>
+    <button class="nav__item" data-tab="mypet">
+      <span class="nav__icon">🐾</span>
+      <span class="nav__label">마이펫</span>
+    </button>
+    <button class="nav__item" data-tab="settings">
+      <span class="nav__icon">⚙️</span>
+      <span class="nav__label">설정</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ══ CROPPER MODAL ══ -->
+<div class="modal modal--hidden" id="js-crop-modal">
+  <div class="modal__overlay"></div>
+  <div class="modal__content">
+    <div class="modal__header">
+      <h3>사진 크롭</h3>
+      <button class="modal__close" id="js-crop-cancel">✕</button>
+    </div>
+    <div class="modal__body">
+      <div class="crop-container">
+        <img id="js-crop-image" src="" alt="Crop Area">
+      </div>
+    </div>
+    <div class="modal__footer">
+      <button class="btn btn--primary btn--full" id="js-crop-save">적용하기</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
